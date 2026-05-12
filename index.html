@@ -9,280 +9,66 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --wood-dark: #5d4037;
-            --wood-light: #8d6e63;
-            --panel-cream: #f5f5dc;
-            --grass-green: #7ba37a;
+            --wood: #8d6e63;
+            --dark-wood: #5d4037;
+            --grass: #7ba37a;
+            --panel: #f5f5dc;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Nunito', sans-serif;
-            /* Background utama tekstur kayu gudang */
-            background: #d7ccc8;
-            background-image: 
-                linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px),
-                linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            color: #3e2723;
+            /* Background utama: Tekstur Kayu Hangat */
+            background: #d7ccc8 url('https://www.transparenttextures.com/patterns/wood-pattern.png');
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
         }
 
-        /* Tampilan Jendela di Background */
-        .window-bg {
+        /* JENDELA DENGAN PEMANDANGAN PETERNAKAN */
+        .scenery-window {
             position: fixed;
-            top: 50px;
-            width: 80%;
-            height: 300px;
-            background: skyblue;
-            border: 15px solid #5d4037;
+            top: 40px;
+            width: 85%;
+            height: 350px;
+            background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80') center/cover;
+            border: 15px solid var(--dark-wood);
             border-radius: 10px;
-            z-index: -1;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.2), 0 20px 40px rgba(0,0,0,0.3);
-            background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1000&q=80'); /* Gambar rumput/bukit */
-            background-size: cover;
-            background-position: center;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.3), 0 20px 40px rgba(0,0,0,0.4);
+            z-index: 0;
+            display: flex;
+            justify-content: center;
         }
 
-        .window-frame {
-            position: absolute;
-            top: 0; left: 50%; width: 15px; height: 100%; background: #5d4037; transform: translateX(-50%);
+        .scenery-window::before { /* Bingkai tengah jendela */
+            content: '';
+            width: 15px;
+            height: 100%;
+            background: var(--dark-wood);
         }
 
-        .container {
-            width: 90%;
+        /* CONTAINER UTAMA */
+        .wrapper {
+            width: 95%;
             max-width: 1000px;
-            margin-top: 150px; /* Supaya turun dari jendela */
-            z-index: 1;
+            margin-top: 220px; /* Menumpuk di atas jendela */
+            z-index: 10;
+            position: relative;
         }
 
-        /* Papan Nama Shaun Garden */
-        .signboard {
+        /* LOGO SHAUN GARDEN (Papan Kayu Gantung) */
+        .logo-board {
             background: #2e7d32;
             color: white;
-            padding: 10px 50px;
-            border-radius: 10px;
-            border: 5px solid #1b5e20;
-            font-size: 3rem;
+            padding: 15px 60px;
+            border-radius: 15px;
+            border: 6px solid #1b5e20;
+            font-size: 3.5rem;
             font-weight: 900;
             text-align: center;
             width: fit-content;
-            margin: 0 auto 30px;
-            box-shadow: 0 10px 0 #1b5e20, 0 15px 25px rgba(0,0,0,0.2);
-            transform: rotate(-1deg);
-        }
-
-        /* Main Dashboard Panel */
-        .main-panel {
-            background: #efebe9;
-            border-radius: 15px;
-            border: 10px solid #8d6e63;
-            padding: 40px;
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-
-        .section-box {
-            background: rgba(255,255,255,0.7);
-            border-radius: 10px;
-            padding: 20px;
-            border: 2px dashed #bcaaa4;
-        }
-
-        h2 {
-            font-weight: 900;
-            color: #2e7d32;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Sensor Styles */
-        .sensor-item {
-            background: white;
-            margin-bottom: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .sensor-label { font-weight: 700; font-size: 0.9rem; }
-        .sensor-val { 
-            background: #333; color: #0f0; padding: 5px 15px; 
-            border-radius: 5px; font-family: monospace; font-size: 1.5rem; 
-        }
-
-        /* Control Styles */
-        .relay-card {
-            background: #d7ccc8;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            border: 4px solid #5d4037;
-        }
-
-        .bolt { font-size: 4rem; color: #ffeb3b; margin: 10px 0; }
-        
-        .btn-group {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
-        }
-
-        .btn {
-            border: none; padding: 15px; border-radius: 10px; font-weight: 900;
-            cursor: pointer; transition: 0.2s;
-        }
-        .btn-on { background: #4caf50; color: white; box-shadow: 0 5px 0 #2e7d32; }
-        .btn-off { background: #f44336; color: white; box-shadow: 0 5px 0 #b71c1c; }
-        .btn:active { transform: translateY(5px); box-shadow: none; }
-
-        /* Status Bar Atas */
-        .status-bar {
-            width: 100%; background: rgba(0,0,0,0.8); color: white;
-            padding: 5px 20px; display: flex; justify-content: space-between; font-size: 0.8rem;
-        }
-
-        @media (max-width: 800px) {
-            .main-panel { grid-template-columns: 1fr; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="status-bar">
-        <div>
-            <span id="status-bt">BT: DISCONNECTED</span> | 
-            <span id="status-fb">DB: OFFLINE</span>
-        </div>
-        <div onclick="toggleConfig()" style="cursor:pointer">SETTING <i class="fas fa-cog"></i></div>
-    </div>
-
-    <div class="window-bg"><div class="window-frame"></div></div>
-
-    <div class="container">
-        <div class="signboard">Shaun garden</div>
-
-        <div id="config-panel" style="display:none; background: white; padding: 20px; margin-bottom: 20px; border-radius: 10px;">
-            <input type="text" id="fb-apiKey" placeholder="API Key" style="padding:5px">
-            <input type="text" id="fb-dbUrl" placeholder="DB URL" style="padding:5px">
-            <button onclick="connectFirebase()">Connect</button>
-            <button onclick="connectBLE()">Connect Bluetooth</button>
-        </div>
-
-        <div class="main-panel">
-            <div class="section-box">
-                <h2><i class="fas fa-leaf"></i> LIVE SENSOR DATA</h2>
-                
-                <div class="sensor-item">
-                    <div class="sensor-label">ULTRASONIK 1 - P0/P1</div>
-                    <div class="sensor-val"><span id="val-jarak">--</span> cm</div>
-                </div>
-
-                <div class="sensor-item">
-                    <div class="sensor-label">ULTRASONIK 2 - P3/P8</div>
-                    <div class="sensor-val"><span id="val-jarak-manual">--</span> cm</div>
-                </div>
-
-                <div class="sensor-item">
-                    <div class="sensor-label">DHT22 - SUHU / HUMIDITY</div>
-                    <div class="sensor-val" style="font-size: 1.2rem;">
-                        <span id="val-suhu">--</span>°C | <span id="val-lembab">--</span>%
-                    </div>
-                </div>
-            </div>
-
-            <div class="section-box">
-                <h2><i class="fas fa-bolt"></i> CONTROL & STATUS</h2>
-                
-                <div class="relay-card">
-                    <div class="bolt" id="relay-icon"><i class="fas fa-bolt"></i></div>
-                    <div style="font-weight: 900;" id="lbl-relay">RELAY OFF</div>
-                </div>
-
-                <div class="btn-group">
-                    <button class="btn btn-on" onclick="window.toggleRelay(true)">ON</button>
-                    <button class="btn btn-off" onclick="window.toggleRelay(false)">OFF</button>
-                </div>
-
-                <button onclick="toggleMode()" id="btn-mode" style="width:100%; margin-top:15px; padding:10px; border-radius:5px; border:1px solid #ccc; font-weight:bold; cursor:pointer;">MODE: OTOMATIS</button>
-            </div>
-        </div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-        import { getDatabase, ref, onValue, update } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
-
-        const state = { db: null, txChar: null, rxChar: null, modeAuto: true };
-
-        window.toggleConfig = () => {
-            const p = document.getElementById('config-panel');
-            p.style.display = p.style.display === 'none' ? 'block' : 'none';
-        };
-
-        // Bluetooth Logics
-        window.connectBLE = async () => {
-            const device = await navigator.bluetooth.requestDevice({
-                filters: [{ namePrefix: "BBC micro:bit" }],
-                optionalServices: ["6e400001-b5a3-f393-e0a9-e50e24dcca9e"]
-            });
-            const server = await device.gatt.connect();
-            const service = await server.getPrimaryService("6e400001-b5a3-f393-e0a9-e50e24dcca9e");
-            state.txChar = await service.getCharacteristic("6e400002-b5a3-f393-e0a9-e50e24dcca9e");
-            state.rxChar = await service.getCharacteristic("6e400003-b5a3-f393-e0a9-e50e24dcca9e");
-            
-            await state.txChar.startNotifications();
-            state.txChar.addEventListener('characteristicvaluechanged', (e) => {
-                const val = new TextDecoder().decode(e.target.value);
-                handleData(val.trim());
-            });
-            document.getElementById('status-bt').innerText = "BT: CONNECTED";
-        };
-
-        function handleData(txt) {
-            const [key, val] = txt.split(',');
-            if(key === "jarak") document.getElementById('val-jarak').innerText = val;
-            if(key === "jarak_manual") document.getElementById('val-jarak-manual').innerText = val;
-            if(key === "Relay") updateRelayUI(val == "1");
-            
-            if(state.db) update(ref(state.db, "smarthome/ruangan1/" + key), { value: parseFloat(val) });
-        }
-
-        window.toggleRelay = async (isOn) => {
-            if(!state.rxChar) return;
-            const cmd = `Relay,${isOn?1:0}\n`;
-            await state.rxChar.writeValue(new TextEncoder().encode(cmd));
-        };
-
-        window.toggleMode = () => {
-            state.modeAuto = !state.modeAuto;
-            document.getElementById('btn-mode').innerText = state.modeAuto ? "MODE: OTOMATIS" : "MODE: MANUAL";
-            if(state.rxChar) state.rxChar.writeValue(new TextEncoder().encode(`mode,${state.modeAuto?1:0}\n`));
-        };
-
-        function updateRelayUI(isOn) {
-            document.getElementById('lbl-relay').innerText = isOn ? "RELAY ON" : "RELAY OFF";
-            document.getElementById('relay-icon').style.color = isOn ? "#00ff00" : "#ffeb3b";
-        }
-
-        window.connectFirebase = () => {
-            const config = {
-                apiKey: document.getElementById('fb-apiKey').value,
-                databaseURL: document.getElementById('fb-dbUrl').value
-            };
-            const app = initializeApp(config);
-            state.db = getDatabase(app);
-            document.getElementById('status-fb').innerText = "DB: CONNECTED";
-        };
-    </script>
-</body>
-</html>
+            margin: 0 auto 40px;
+            box-shadow: 0 12px 0 #1b5e20, 0 20px 30px

@@ -3,345 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shaun Garden 🌱</title>
+    <title>Shaun Garden Dashboard 🌱</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --primary-green: #588157;
-            --dark-green: #3a5a40;
-            --bg-cream: #f4f1de; /* Krem pastel sesuai gambar */
-            --card-bg: #ffffff;
-            --text-main: #344e41;
-            --radius: 20px;
+            --wood-dark: #5d4037;
+            --wood-light: #8d6e63;
+            --panel-cream: #f5f5dc;
+            --grass-green: #7ba37a;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Nunito', sans-serif;
-            background-color: var(--bg-cream);
-            color: var(--text-main);
+            /* Background utama tekstur kayu gudang */
+            background: #d7ccc8;
+            background-image: 
+                linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px),
+                linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            color: #3e2723;
             min-height: 100vh;
-            padding-bottom: 50px;
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* ===== DEKORASI RUMPUT & FARM ===== */
-        .farm-decor {
+        /* Tampilan Jendela di Background */
+        .window-bg {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 250px;
-            background: linear-gradient(to bottom, transparent, #7ba37a 80%);
+            top: 50px;
+            width: 80%;
+            height: 300px;
+            background: skyblue;
+            border: 15px solid #5d4037;
+            border-radius: 10px;
             z-index: -1;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.2), 0 20px 40px rgba(0,0,0,0.3);
+            background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1000&q=80'); /* Gambar rumput/bukit */
+            background-size: cover;
+            background-position: center;
         }
 
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 30px 20px;
+        .window-frame {
+            position: absolute;
+            top: 0; left: 50%; width: 15px; height: 100%; background: #5d4037; transform: translateX(-50%);
         }
 
-        /* ===== HEADER (Logo Shaun Garden) ===== */
-        .header-area {
-            text-align: center;
-            margin-bottom: 40px;
-            position: relative;
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin-top: 150px; /* Supaya turun dari jendela */
+            z-index: 1;
         }
 
-        .logo-shaun {
-            background-color: var(--primary-green);
-            display: inline-block;
-            padding: 12px 60px;
-            border-radius: 60px;
-            border: 5px solid var(--dark-green);
-            box-shadow: 0 6px 0px var(--dark-green);
+        /* Papan Nama Shaun Garden */
+        .signboard {
+            background: #2e7d32;
             color: white;
-            font-size: 2.8rem;
+            padding: 10px 50px;
+            border-radius: 10px;
+            border: 5px solid #1b5e20;
+            font-size: 3rem;
             font-weight: 900;
-            letter-spacing: -1px;
-            position: relative;
+            text-align: center;
+            width: fit-content;
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 0 #1b5e20, 0 15px 25px rgba(0,0,0,0.2);
+            transform: rotate(-1deg);
         }
 
-        /* ===== MAIN LAYOUT GRID ===== */
-        .main-grid {
+        /* Main Dashboard Panel */
+        .main-panel {
+            background: #efebe9;
+            border-radius: 15px;
+            border: 10px solid #8d6e63;
+            padding: 40px;
             display: grid;
-            grid-template-columns: 2.4fr 1fr;
-            gap: 24px;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
 
-        /* ===== CARDS ===== */
-        .glass-card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 24px;
-            border: 2px solid #e9edc9;
-            box-shadow: 0 10px 25px rgba(52, 78, 65, 0.08);
+        .section-box {
+            background: rgba(255,255,255,0.7);
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px dashed #bcaaa4;
         }
 
-        .section-header {
-            font-weight: 800;
-            font-size: 1.3rem;
+        h2 {
+            font-weight: 900;
+            color: #2e7d32;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
-            color: var(--dark-green);
         }
 
-        /* ===== SENSOR ITEMS (Horizontal di Desktop) ===== */
-        .sensor-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+        /* Sensor Styles */
+        .sensor-item {
+            background: white;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
         }
 
-        .sensor-box {
-            background: #fafaf5;
-            border: 1.5px solid #eee;
-            border-radius: 15px;
-            padding: 18px;
-            text-align: left;
-            position: relative;
-            overflow: hidden;
+        .sensor-label { font-weight: 700; font-size: 0.9rem; }
+        .sensor-val { 
+            background: #333; color: #0f0; padding: 5px 15px; 
+            border-radius: 5px; font-family: monospace; font-size: 1.5rem; 
         }
 
-        .sensor-box::after {
-            content: '';
-            position: absolute;
-            top: 0; right: 0;
-            width: 50px; height: 50px;
-            background: #e9edc9;
-            border-radius: 0 0 0 100%;
-            opacity: 0.5;
+        /* Control Styles */
+        .relay-card {
+            background: #d7ccc8;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 4px solid #5d4037;
         }
 
-        .sensor-box i { font-size: 1rem; margin-right: 5px; }
-        .sensor-label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--dark-green); margin-bottom: 12px; display: block; }
-        .sensor-value { font-size: 2.2rem; font-weight: 900; margin: 10px 0; color: #333; }
-        .sensor-unit { font-size: 0.9rem; font-weight: 700; color: #666; }
-        .sensor-note { font-size: 0.65rem; color: #888; border-top: 1px solid #eee; padding-top: 8px; margin-top: 10px; }
-
-        /* ===== CONTROL PANEL ===== */
-        .control-panel { display: flex; flex-direction: column; gap: 20px; }
-
-        .status-pompa { text-align: center; }
-        .bolt-icon { font-size: 3.5rem; color: #ffb703; margin-bottom: 10px; filter: drop-shadow(0 0 8px rgba(255, 183, 3, 0.3)); }
+        .bolt { font-size: 4rem; color: #ffeb3b; margin: 10px 0; }
         
-        .relay-status-text { font-size: 1.4rem; font-weight: 900; text-transform: uppercase; }
-
-        .btn-manual-group {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;
+        .btn-group {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
         }
 
-        .btn-farm {
-            border: none; padding: 12px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.2s;
+        .btn {
+            border: none; padding: 15px; border-radius: 10px; font-weight: 900;
+            cursor: pointer; transition: 0.2s;
         }
-        .btn-on { background: #7ba37a; color: white; }
-        .btn-off { background: #ced4da; color: #495057; }
-        .btn-farm:active { transform: translateY(2px); }
+        .btn-on { background: #4caf50; color: white; box-shadow: 0 5px 0 #2e7d32; }
+        .btn-off { background: #f44336; color: white; box-shadow: 0 5px 0 #b71c1c; }
+        .btn:active { transform: translateY(5px); box-shadow: none; }
 
-        /* ===== CONNECTION PANEL (Hidden for cleaner look) ===== */
-        .conn-settings {
-            background: #344e41; color: white; padding: 8px 20px; font-size: 0.75rem; display: flex; justify-content: space-between;
-        }
-        .conn-settings span.online { color: #a3b18a; font-weight: bold; }
-
-        /* Mobile Fix */
-        @media (max-width: 850px) {
-            .main-grid { grid-template-columns: 1fr; }
-            .sensor-container { grid-template-columns: 1fr; }
-            .logo-shaun { font-size: 2rem; padding: 10px 40px; }
+        /* Status Bar Atas */
+        .status-bar {
+            width: 100%; background: rgba(0,0,0,0.8); color: white;
+            padding: 5px 20px; display: flex; justify-content: space-between; font-size: 0.8rem;
         }
 
-        /* Logika Warna */
-        .text-on { color: var(--primary-green); }
-        .text-off { color: #888; }
+        @media (max-width: 800px) {
+            .main-panel { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="conn-settings">
+    <div class="status-bar">
         <div>
-            <span id="status-bt"><i class="fab fa-bluetooth-b"></i> BT Offline</span> | 
-            <span id="status-fb"><i class="fas fa-cloud"></i> DB Offline</span>
+            <span id="status-bt">BT: DISCONNECTED</span> | 
+            <span id="status-fb">DB: OFFLINE</span>
         </div>
-        <div style="cursor:pointer" onclick="toggleSetup()">Setup <i class="fas fa-cog"></i></div>
+        <div onclick="toggleConfig()" style="cursor:pointer">SETTING <i class="fas fa-cog"></i></div>
     </div>
 
-    <div class="wrapper">
-        <div class="header-area">
-            <div class="logo-shaun">Shaun garden</div>
+    <div class="window-bg"><div class="window-frame"></div></div>
+
+    <div class="container">
+        <div class="signboard">Shaun garden</div>
+
+        <div id="config-panel" style="display:none; background: white; padding: 20px; margin-bottom: 20px; border-radius: 10px;">
+            <input type="text" id="fb-apiKey" placeholder="API Key" style="padding:5px">
+            <input type="text" id="fb-dbUrl" placeholder="DB URL" style="padding:5px">
+            <button onclick="connectFirebase()">Connect</button>
+            <button onclick="connectBLE()">Connect Bluetooth</button>
         </div>
 
-        <div id="setup-panel" class="glass-card" style="display:none; margin-bottom:20px; background:#fff;">
-            <h3 style="margin-bottom:15px">Connection Setup</h3>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-                <input type="password" id="fb-apiKey" placeholder="API Key" style="padding:10px; border-radius:8px; border:1px solid #ccc;">
-                <input type="text" id="fb-dbUrl" placeholder="DB URL" style="padding:10px; border-radius:8px; border:1px solid #ccc;">
-                <button onclick="connectFirebase()" class="btn-farm btn-on">Link Firebase</button>
-                <button id="btn-connect-ble" onclick="connectBLE()" class="btn-farm btn-off">Connect Microbit</button>
-            </div>
-        </div>
-
-        <div class="main-grid">
-            <div class="glass-card">
-                <div class="section-header">
-                    <i class="fas fa-seedling"></i> Live Sensor Data
+        <div class="main-panel">
+            <div class="section-box">
+                <h2><i class="fas fa-leaf"></i> LIVE SENSOR DATA</h2>
+                
+                <div class="sensor-item">
+                    <div class="sensor-label">ULTRASONIK 1 - P0/P1</div>
+                    <div class="sensor-val"><span id="val-jarak">--</span> cm</div>
                 </div>
-                <div class="sensor-container">
-                    <div class="sensor-box">
-                        <span class="sensor-label"><i class="fas fa-tint" style="color:#0077b6"></i> Ultrasonik 1</span>
-                        <div class="sensor-value"><span id="val-jarak">--</span> <span class="sensor-unit">cm</span></div>
-                        <div class="sensor-note">Relay ON jika jarak ≥ 30cm</div>
-                    </div>
-                    <div class="sensor-box">
-                        <span class="sensor-label"><i class="fas fa-water" style="color:#48cae4"></i> Ultrasonik 2</span>
-                        <div class="sensor-value"><span id="val-jarak-manual">--</span> <span class="sensor-unit">cm</span></div>
-                        <div class="sensor-note">Monitoring level air ember</div>
-                    </div>
-                    <div class="sensor-box">
-                        <span class="sensor-label"><i class="fas fa-thermometer-half" style="color:#e63946"></i> DHT22</span>
-                        <div class="sensor-value" style="font-size: 1.5rem;">
-                            <span id="val-temp">28</span><span class="sensor-unit">°C</span> 
-                            <span id="val-hum" style="margin-left:5px">65</span><span class="sensor-unit">%</span>
-                        </div>
-                        <div class="sensor-note">Suhu & Kelembapan Udara</div>
+
+                <div class="sensor-item">
+                    <div class="sensor-label">ULTRASONIK 2 - P3/P8</div>
+                    <div class="sensor-val"><span id="val-jarak-manual">--</span> cm</div>
+                </div>
+
+                <div class="sensor-item">
+                    <div class="sensor-label">DHT22 - SUHU / HUMIDITY</div>
+                    <div class="sensor-val" style="font-size: 1.2rem;">
+                        <span id="val-suhu">--</span>°C | <span id="val-lembab">--</span>%
                     </div>
                 </div>
             </div>
 
-            <div class="control-panel">
-                <div class="glass-card status-pompa">
-                    <div class="section-header" style="justify-content: center; margin-bottom: 10px;">
-                        <i class="fas fa-bolt"></i> STATUS POMPA
-                    </div>
-                    <div class="bolt-icon" id="icon-bolt"><i class="fas fa-bolt"></i></div>
-                    <div class="relay-status-text" id="lbl-relay">RELAY OFF</div>
-                    <div style="font-size: 0.65rem; color:#aaa; margin-top:10px;">Pin P13 - Untuk mengontrol pompa</div>
+            <div class="section-box">
+                <h2><i class="fas fa-bolt"></i> CONTROL & STATUS</h2>
+                
+                <div class="relay-card">
+                    <div class="bolt" id="relay-icon"><i class="fas fa-bolt"></i></div>
+                    <div style="font-weight: 900;" id="lbl-relay">RELAY OFF</div>
                 </div>
 
-                <div class="glass-card" style="text-align: center;">
-                    <div class="section-header" style="justify-content: center; margin-bottom: 5px;">
-                        <i class="fas fa-tools"></i> MANUAL CONTROL
-                    </div>
-                    <p style="font-size: 0.75rem; color:#666;">Klik tombol untuk kontrol manual</p>
-                    <div class="btn-manual-group">
-                        <button class="btn-farm btn-on" onclick="window.toggleRelay(true)">ON</button>
-                        <button class="btn-farm btn-off" onclick="window.toggleRelay(false)">OFF</button>
-                    </div>
-                    <button id="btn-mode-toggle" onclick="changeSystemMode()" style="width:100%; margin-top:15px; background:none; border:1px solid #ddd; padding:8px; border-radius:8px; font-size:0.7rem; font-weight:bold; cursor:pointer;">
-                        MODE: OTOMATIS
-                    </button>
+                <div class="btn-group">
+                    <button class="btn btn-on" onclick="window.toggleRelay(true)">ON</button>
+                    <button class="btn btn-off" onclick="window.toggleRelay(false)">OFF</button>
                 </div>
+
+                <button onclick="toggleMode()" id="btn-mode" style="width:100%; margin-top:15px; padding:10px; border-radius:5px; border:1px solid #ccc; font-weight:bold; cursor:pointer;">MODE: OTOMATIS</button>
             </div>
         </div>
     </div>
-
-    <div class="farm-decor"></div>
 
     <script type="module">
-        import { initializeApp, getApps, deleteApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-        import { getDatabase, ref, onValue, update, set } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getDatabase, ref, onValue, update } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
-        // State & Config (Logika asli)
-        const state = {
-            db: null, path: "smarthome/ruangan1", device: null, txChar: null, rxChar: null,
-            bleConnected: false, bleBuffer: "", modeOtomatis: 1
-        };
+        const state = { db: null, txChar: null, rxChar: null, modeAuto: true };
 
-        // UI Helpers
-        window.toggleSetup = () => {
-            const p = document.getElementById('setup-panel');
+        window.toggleConfig = () => {
+            const p = document.getElementById('config-panel');
             p.style.display = p.style.display === 'none' ? 'block' : 'none';
         };
 
-        function updateRelayUI(isOn) {
-            const lbl = document.getElementById('lbl-relay');
-            const icon = document.getElementById('icon-bolt');
-            lbl.innerText = isOn ? "RELAY ON" : "RELAY OFF";
-            lbl.className = "relay-status-text " + (isOn ? "text-on" : "text-off");
-            icon.style.color = isOn ? "#ffb703" : "#ced4da";
-        }
-
-        // Bluetooth Logic (Sama seperti file index-mu)
-        const SVC = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
-        const TX  = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
-        const RX  = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
-
+        // Bluetooth Logics
         window.connectBLE = async () => {
-            try {
-                state.device = await navigator.bluetooth.requestDevice({
-                    filters: [{ namePrefix: "BBC micro:bit" }],
-                    optionalServices: [SVC]
-                });
-                const server = await state.device.gatt.connect();
-                const service = await server.getPrimaryService(SVC);
-                state.txChar = await service.getCharacteristic(TX);
-                state.rxChar = await service.getCharacteristic(RX);
-                await state.txChar.startNotifications();
-                state.txChar.addEventListener("characteristicvaluechanged", (e) => {
-                    let decoder = new TextDecoder();
-                    state.bleBuffer += decoder.decode(e.target.value);
-                    let lines = state.bleBuffer.split('\n');
-                    state.bleBuffer = lines.pop();
-                    lines.forEach(line => processLine(line.trim()));
-                });
-                state.bleConnected = true;
-                document.getElementById('status-bt').innerHTML = '<i class="fab fa-bluetooth-b"></i> BT <span class="online">Connected</span>';
-            } catch (err) { console.warn(err); }
+            const device = await navigator.bluetooth.requestDevice({
+                filters: [{ namePrefix: "BBC micro:bit" }],
+                optionalServices: ["6e400001-b5a3-f393-e0a9-e50e24dcca9e"]
+            });
+            const server = await device.gatt.connect();
+            const service = await server.getPrimaryService("6e400001-b5a3-f393-e0a9-e50e24dcca9e");
+            state.txChar = await service.getCharacteristic("6e400002-b5a3-f393-e0a9-e50e24dcca9e");
+            state.rxChar = await service.getCharacteristic("6e400003-b5a3-f393-e0a9-e50e24dcca9e");
+            
+            await state.txChar.startNotifications();
+            state.txChar.addEventListener('characteristicvaluechanged', (e) => {
+                const val = new TextDecoder().decode(e.target.value);
+                handleData(val.trim());
+            });
+            document.getElementById('status-bt').innerText = "BT: CONNECTED";
         };
 
-        function processLine(txt) {
-            if(!txt.includes(',')) return;
+        function handleData(txt) {
             const [key, val] = txt.split(',');
-            const num = parseFloat(val);
+            if(key === "jarak") document.getElementById('val-jarak').innerText = val;
+            if(key === "jarak_manual") document.getElementById('val-jarak-manual').innerText = val;
+            if(key === "Relay") updateRelayUI(val == "1");
             
-            if(key === "jarak") document.getElementById('val-jarak').innerText = num;
-            if(key === "jarak_manual") document.getElementById('val-jarak-manual').innerText = num;
-            if(key === "Relay") updateRelayUI(num === 1);
-            if(key === "mode") setModeUI(num === 1);
-
-            // Sync to Firebase
-            if(state.db) update(ref(state.db, state.path + "/" + key), { value: num });
+            if(state.db) update(ref(state.db, "smarthome/ruangan1/" + key), { value: parseFloat(val) });
         }
 
         window.toggleRelay = async (isOn) => {
             if(!state.rxChar) return;
-            const cmd = `Relay,${isOn ? 1 : 0}\n`;
+            const cmd = `Relay,${isOn?1:0}\n`;
             await state.rxChar.writeValue(new TextEncoder().encode(cmd));
         };
 
-        window.changeSystemMode = () => {
-            state.modeOtomatis = state.modeOtomatis === 1 ? 0 : 1;
-            setModeUI(state.modeOtomatis === 1);
-            if(state.rxChar) state.rxChar.writeValue(new TextEncoder().encode(`mode,${state.modeOtomatis}\n`));
+        window.toggleMode = () => {
+            state.modeAuto = !state.modeAuto;
+            document.getElementById('btn-mode').innerText = state.modeAuto ? "MODE: OTOMATIS" : "MODE: MANUAL";
+            if(state.rxChar) state.rxChar.writeValue(new TextEncoder().encode(`mode,${state.modeAuto?1:0}\n`));
         };
 
-        function setModeUI(isAuto) {
-            document.getElementById('btn-mode-toggle').innerText = isAuto ? "MODE: OTOMATIS" : "MODE: MANUAL";
+        function updateRelayUI(isOn) {
+            document.getElementById('lbl-relay').innerText = isOn ? "RELAY ON" : "RELAY OFF";
+            document.getElementById('relay-icon').style.color = isOn ? "#00ff00" : "#ffeb3b";
         }
 
-        // Firebase Sync
         window.connectFirebase = () => {
-            const apiKey = document.getElementById('fb-apiKey').value;
-            const dbUrl = document.getElementById('fb-dbUrl').value;
-            if(!apiKey || !dbUrl) return alert("Isi config!");
-            
-            const app = initializeApp({ apiKey, databaseURL: dbUrl });
+            const config = {
+                apiKey: document.getElementById('fb-apiKey').value,
+                databaseURL: document.getElementById('fb-dbUrl').value
+            };
+            const app = initializeApp(config);
             state.db = getDatabase(app);
-            document.getElementById('status-fb').innerHTML = '<i class="fas fa-cloud"></i> DB <span class="online">Synced</span>';
-            
-            onValue(ref(state.db, state.path), (snap) => {
-                const data = snap.val();
-                if(!data) return;
-                if(data.jarak) document.getElementById('val-jarak').innerText = data.jarak.value;
-                if(data.jarak_manual) document.getElementById('val-jarak-manual').innerText = data.jarak_manual.value;
-                if(data.relay) updateRelayUI(data.relay.value === 1);
-            });
+            document.getElementById('status-fb').innerText = "DB: CONNECTED";
         };
     </script>
 </body>
